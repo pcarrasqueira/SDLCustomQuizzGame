@@ -7,4 +7,6 @@
 *.orig
 *.idb
 *.aps
+*.sdf
+*.opensdf
 

@@ -16,6 +16,10 @@ using namespace std;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
+//Font Sizes
+const int QUESTION_FONT_SIZE = 48;
+const int ANSWARE_FONT_SIZE = 24;
+
 //Globally used font
 TTF_Font *gFont = NULL;
 
@@ -584,7 +588,7 @@ bool loadQuestion()
 	bool success = true;
 
 	//Open the font
-	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", 48);
+	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
 	if (gFont == NULL)
 	{
 		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -599,22 +603,45 @@ bool loadQuestion()
 			printf("Failed to render text texture!\n");
 			success = false;
 		}
-		else if (!gAnswareA.loadFromRenderedText("Sim", textColor))
+	}
+
+	return success;
+}
+
+
+bool loadAnswares()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Open the font
+	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWARE_FONT_SIZE);
+	if (gFont == NULL)
+	{
+		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+		success = false;
+	}
+	else
+	{
+		//Render text
+		SDL_Color textColor = { 0, 0, 0 };
+
+		if (!gAnswareA.loadFromRenderedText("Resposta A", textColor))
 		{
 			printf("Failed to render text texture!\n");
 			success = false;
 		}
-		else if (!gAnswareB.loadFromRenderedText("Sim", textColor))
+		else if (!gAnswareB.loadFromRenderedText("Resposta B", textColor))
 		{
 			printf("Failed to render text texture!\n");
 			success = false;
 		}
-		else if (!gAnswareC.loadFromRenderedText("Sim", textColor))
+		else if (!gAnswareC.loadFromRenderedText("Resposta C", textColor))
 		{
 			printf("Failed to render text texture!\n");
 			success = false;
 		}
-		else if (!gAnswareD.loadFromRenderedText("Sim", textColor))
+		else if (!gAnswareD.loadFromRenderedText("Resposta D", textColor))
 		{
 			printf("Failed to render text texture!\n");
 			success = false;
@@ -661,7 +688,11 @@ int main(int argc, char* args[])
 	{
 		if (!loadQuestion())
 		{
-			printf("Failed to load media!\n");
+			printf("Failed to load question!\n");
+		}
+		else if (!loadAnswares())
+		{
+			printf("Failed to load answares!\n");
 		}
 		//Load media
 		else if (!loadMedia())
@@ -703,29 +734,41 @@ int main(int argc, char* args[])
 					int myWidth = gWindow.getWidth();
 					int myHeight = 60;
 
-					if (myHeight > gWindow.getHeight() / 4)
+					if (myHeight > gWindow.getHeight() / 4.0)
 					{
-						myHeight = gWindow.getHeight() / 4;
+						myHeight = gWindow.getHeight() / 4.0;
 					}
 
-					gSceneTexture.render((gWindow.getWidth() - myWidth) / 2, (gWindow.getHeight()) / 4, myWidth, myHeight);
-					gQuestionText.render(((gWindow.getWidth() - myWidth) / 2) + 50, ((gWindow.getHeight()) / 4) + ((gSceneTexture.getHeight() / 2) - (gQuestionText.getHeight() / 2)));
+					//Question
+					gSceneTexture.render((gWindow.getWidth() - myWidth) / 2.0, (gWindow.getHeight()) / 4.0, myWidth, myHeight);
+					
+					int nQBorderX = 20;
+					int nQBorderY = gSceneTexture.getHeight() / 2.0;
+
+					gQuestionText.render(nQBorderX + ((gWindow.getWidth() - myWidth) / 2.0) + 50, nQBorderY - (QUESTION_FONT_SIZE / 2.0) + ((gWindow.getHeight()) / 4.0));
 
 					int myWidthA = (gWindow.getWidth() / 2.0);
 					int myHeightA = (gWindow.getHeight() / 8.0) / 2.0;
 
-
+					//Answare A
 					gSceneTextureA.render(((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
-					gAnswareA.render(((gWindow.getWidth() - myWidth) / 2) + 100, ((gWindow.getHeight()) / 4) + ((gSceneTexture.getHeight() / 2) - (gQuestionText.getHeight() / 2)));
+					
+					int nBorderX = 20;
+					int nBorderY = gSceneTextureA.getHeight() / 2.0;
 
+					gAnswareA.render(nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
+					
+					//Answare B
 					gSceneTextureB.render(((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-					gAnswareB.render(((gWindow.getWidth() - myWidth) / 2) + 100, ((gWindow.getHeight()) / 4) + ((gSceneTexture.getHeight() / 2) - (gQuestionText.getHeight() / 2)));
+					gAnswareB.render(nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 
+					//Answare C
 					gSceneTextureC.render(gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
-					gAnswareC.render(((gWindow.getWidth() - myWidth) / 2) + 100, ((gWindow.getHeight()) / 4) + ((gSceneTexture.getHeight() / 2) - (gQuestionText.getHeight() / 2)));
+					gAnswareC.render(nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
 
+					//Answare D
 					gSceneTextureD.render(gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-					gAnswareD.render(((gWindow.getWidth() - myWidth) / 2) + 100, ((gWindow.getHeight()) / 4) + ((gSceneTexture.getHeight() / 2) - (gQuestionText.getHeight() / 2)));
+					gAnswareD.render(nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 
 					//Update screen
 					SDL_RenderPresent(gRenderer);

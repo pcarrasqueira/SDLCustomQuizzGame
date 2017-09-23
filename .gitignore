@@ -1,0 +1,10 @@
+#Directories to ignore
+
+
+#Files to ignore
+*Debug
+*Release
+*.orig
+*.idb
+*.aps
+

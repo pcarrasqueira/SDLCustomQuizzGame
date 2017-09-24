@@ -598,7 +598,7 @@ bool loadQuestion()
 	{
 		//Render text
 		SDL_Color textColor = { 0, 0, 0 };
-		if (!gQuestionText.loadFromRenderedText("Queres ser feliz comigo?", textColor))
+		if (!gQuestionText.loadFromRenderedText("Pergunta ?????", textColor))
 		{
 			printf("Failed to render text texture!\n");
 			success = false;
@@ -607,7 +607,6 @@ bool loadQuestion()
 
 	return success;
 }
-
 
 bool loadAnswares()
 {

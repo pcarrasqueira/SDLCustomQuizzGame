@@ -13,6 +13,8 @@
   <ItemGroup>
     <ClInclude Include="include\begin_code.h" />
     <ClInclude Include="include\close_code.h" />
+    <ClInclude Include="include\CLTexture.h" />
+    <ClInclude Include="include\CLWindow.h" />
     <ClInclude Include="include\SDL.h" />
     <ClInclude Include="include\SDL_assert.h" />
     <ClInclude Include="include\SDL_atomic.h" />
@@ -96,6 +98,8 @@
     <ClInclude Include="include\SDL_video.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CLTexture.cpp" />
+    <ClCompile Include="src\CLWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -134,7 +138,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\SDL;$(ProjectDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

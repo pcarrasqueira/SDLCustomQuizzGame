@@ -43,8 +43,8 @@ bool CLWindow::init()
 		{
 			// On success, print the current display mode.
 			SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, current.w, current.h, current.refresh_rate);
-			windowWidth = current.w;
-			windowHeight = current.h;
+			//windowWidth = current.w;
+			//windowHeight = current.h;
 		}
 
 	}
@@ -133,7 +133,7 @@ void CLWindow::handleEvent(SDL_Event& e)
 		if (updateCaption)
 		{
 			std::stringstream caption;
-			caption << "SDL Tutorial - MouseFocus:" << ((mMouseFocus) ? "On" : "Off") << " KeyboardFocus:" << ((mKeyboardFocus) ? "On" : "Off");
+			caption << "Custom Quizz Game - MouseFocus:" << ((mMouseFocus) ? "On" : "Off") << " KeyboardFocus:" << ((mKeyboardFocus) ? "On" : "Off");
 			SDL_SetWindowTitle(mWindow, caption.str().c_str());
 		}
 	}

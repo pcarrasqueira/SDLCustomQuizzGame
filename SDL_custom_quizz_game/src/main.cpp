@@ -9,35 +9,43 @@ and may not be redistributed without written permission.*/
 #include <string>
 #include <sstream>
 #include <iostream>
-
 #include <CLTexture.h>
 #include <CLWindow.h>
+#include "spdlog/spdlog.h"
+#include "CBuzzCommand.h"
 
+using namespace spdlog;
 using namespace std;
 
 //Font Sizes
 const int QUESTION_FONT_SIZE = 36;
 const int ANSWARE_FONT_SIZE = 24;
 
+const string strNameBuzzControllers = "Buzz";
+
+shared_ptr<spdlog::logger> gMyLogger;
+
 //Globally used font
 TTF_Font *gFont = NULL;
 
 //Starts up SDL and creates window
 bool init();
-
 //Loads media
 bool loadMedia();
-
 bool loadQuestion();
-
 //Frees media and shuts down SDL
 void close();
+//Initialize global Logger
+void InitializeLogger(shared_ptr<spdlog::logger> &logger);
 
 //Our custom window
 CLWindow gWindow;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+
+//Buzz Controller
+CBuzzCommand BuzzCommand;
 
 //Scene textures
 CLTexture gSceneTexture;
@@ -53,32 +61,32 @@ CLTexture gAnswareB;
 CLTexture gAnswareC;
 CLTexture gAnswareD;
 
-
-
-
 bool init()
 {
 	//Initialization flag
 	bool success = true;
 
+	//Initialize logger
+	InitializeLogger(gMyLogger);
+
 	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
 	{
-		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+		gMyLogger->error("SDL could not initialize! SDL Error: %s", SDL_GetError());
 		success = false;
 	}
 	else
 	{
 		//Set texture filtering to linear
-		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+		if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2"))
 		{
-			printf("Warning: Linear texture filtering not enabled!");
+			gMyLogger->error("Warning: Linear texture filtering not enabled!");
 		}
 
 		//Create window
 		if (!gWindow.init())
 		{
-			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+			gMyLogger->error("Window could not be created! SDL Error: %s", SDL_GetError());
 			success = false;
 		}
 		else
@@ -87,7 +95,7 @@ bool init()
 			gRenderer = gWindow.createRenderer();
 			if (gRenderer == NULL)
 			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+				gMyLogger->error("Renderer could not be created! SDL Error: %s", SDL_GetError());
 				success = false;
 			}
 			else
@@ -99,13 +107,13 @@ bool init()
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags))
 				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+					gMyLogger->error("SDL_image could not initialize! SDL_image Error: %s", IMG_GetError());
 					success = false;
 				}
 				//Initialize SDL_ttf
 				if (TTF_Init() == -1)
 				{
-					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					gMyLogger->error("SDL_ttf could not initialize! SDL_ttf Error: %s", TTF_GetError());
 					success = false;
 				}
 			}
@@ -113,6 +121,21 @@ bool init()
 	}
 
 	return success;
+}
+
+void InitializeLogger(shared_ptr<spdlog::logger> &logger)
+{
+	//gMyLogger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log");
+	logger = basic_logger_mt("basic_logger", "C:/Users/pcarrasqueira/Documents/Visual Studio 2013/Projects/SDL_custom_quizz_game/Release/logs/CustomQuizz.log");
+	if (logger)
+	{
+		set_pattern("[%Hh:%Mm:%Ss] %v");
+		logger->info("****************************************************");
+		logger->info("*	   New instance of CustomQuizz Game             *");
+		logger->info("****************************************************");
+		logger->info("");
+		set_pattern("[%Hh:%Mm:%Ss][T:%t][P:%P][%l] -  %v");
+	}
 }
 
 bool loadMedia()
@@ -123,31 +146,31 @@ bool loadMedia()
 	//Load scene texture
 	if (!gSceneTexture.loadFromFile("data\\graphics\\ui\\Question.png", gRenderer))
 	{
-		printf("Failed to load window texture!\n");
+		gMyLogger->error("Failed to load window texture!");
 		success = false;
 	}
 	//Load scene texture
 	if (!gSceneTextureA.loadFromFile("data\\graphics\\ui\\A.png", gRenderer))
 	{
-		printf("Failed to load window texture!\n");
+		gMyLogger->error("Failed to load window texture!");
 		success = false;
 	}
 	//Load scene texture
 	if (!gSceneTextureB.loadFromFile("data\\graphics\\ui\\B.png", gRenderer))
 	{
-		printf("Failed to load window texture!\n");
+		gMyLogger->error("Failed to load window texture!");
 		success = false;
 	}
 	//Load scene texture
 	if (!gSceneTextureC.loadFromFile("data\\graphics\\ui\\C.png", gRenderer))
 	{
-		printf("Failed to load window texture!\n");
+		gMyLogger->error("Failed to load window texture!");
 		success = false;
 	}
 	//Load scene texture
 	if (!gSceneTextureD.loadFromFile("data\\graphics\\ui\\D.png", gRenderer))
 	{
-		printf("Failed to load window texture!\n");
+		gMyLogger->error("Failed to load window texture!");
 		success = false;
 	}
 
@@ -161,10 +184,10 @@ bool loadQuestion()
 	bool success = true;
 
 	//Open the font
-	gFont = TTF_OpenFont("data//font//arial.ttf", QUESTION_FONT_SIZE);
+	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
 	if (gFont == NULL)
 	{
-		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
 		success = false;
 	}
 	else
@@ -173,7 +196,7 @@ bool loadQuestion()
 		SDL_Color textColor = { 0, 0, 0 };
 		if (!gQuestionText.loadFromRenderedText("Qual destas é a resposta certa?", textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
 	}
@@ -190,7 +213,7 @@ bool loadAnswares()
 	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWARE_FONT_SIZE);
 	if (gFont == NULL)
 	{
-		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
 		success = false;
 	}
 	else
@@ -200,22 +223,22 @@ bool loadAnswares()
 
 		if (!gAnswareA.loadFromRenderedText("Resposta A", textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
 		else if (!gAnswareB.loadFromRenderedText("Resposta B", textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
 		else if (!gAnswareC.loadFromRenderedText("Resposta C", textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
 		else if (!gAnswareD.loadFromRenderedText("Resposta D", textColor, gFont, gRenderer))
 		{
-			printf("Failed to render text texture!\n");
+			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
 	}
@@ -238,6 +261,10 @@ void close()
 	gAnswareC.free();
 	gAnswareD.free();
 
+	//Close game controller
+	SDL_JoystickClose(BuzzCommand.sdlGameController);
+	BuzzCommand.sdlGameController = NULL;
+
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	gWindow.free();
@@ -248,6 +275,8 @@ void close()
 	SDL_Quit();
 }
 
+
+
 int main(int argc, char* args[])
 {
 	bool bGameStart = false;
@@ -255,22 +284,28 @@ int main(int argc, char* args[])
 	//Start up SDL and create window
 	if (!init())
 	{
-		printf("Failed to initialize!\n");
+		gMyLogger->error("Failed to initialize!");
 	}
 	else
 	{
-		if (!loadQuestion())
+		BuzzCommand.InitializeLogger(gMyLogger);
+
+		if (!BuzzCommand.InitializeBuzzControllers())
 		{
-			printf("Failed to load question!\n");
+			gMyLogger->error("Failed to initialize Buzz controllers");
+		}
+		else if (!loadQuestion())
+		{
+			gMyLogger->error("Failed to load question!");
 		}
 		else if (!loadAnswares())
 		{
-			printf("Failed to load answares!\n");
+			gMyLogger->error("Failed to load answares!");
 		}
 		//Load media
 		else if (!loadMedia())
 		{
-			printf("Failed to load media!\n");
+			gMyLogger->error("Failed to load media!");
 		}
 		else
 		{
@@ -353,6 +388,8 @@ int main(int argc, char* args[])
 					}
 					//Handle window events
 					gWindow.handleEvent(e);
+
+					BuzzCommand.handleEvent(e);
 				}
 
 				//Only draw when not minimized
@@ -371,13 +408,13 @@ int main(int argc, char* args[])
 						TTF_Font *lFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
 						if (lFont == NULL)
 						{
-							printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+							gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
 						}
 						else
 						{
 							if (!gIntroText.loadFromRenderedText("Press space to load demo question", textColor, lFont, gRenderer))
 							{
-								printf("Failed to render text texture!\n");
+								gMyLogger->error("Failed to render text texture!");
 							}
 							else
 							{

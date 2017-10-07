@@ -1,6 +1,5 @@
 #include <CLWindow.h>
 #include <string>
-#include <string>
 #include <sstream>
 
 //Screen dimension constants

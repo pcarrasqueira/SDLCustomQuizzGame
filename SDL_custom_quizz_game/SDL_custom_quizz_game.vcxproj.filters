@@ -306,6 +306,9 @@
     <ClInclude Include="include\CBuzzCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CQuestions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -321,6 +324,9 @@
       <Filter>pugixml</Filter>
     </ClCompile>
     <ClCompile Include="src\CBuzzCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CQuestions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

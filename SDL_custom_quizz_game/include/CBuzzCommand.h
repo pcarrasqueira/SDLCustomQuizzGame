@@ -16,7 +16,7 @@ typedef enum {
 class CBuzzCommand
 {
 public:
-
+	//Functions
 	CBuzzCommand();
 	~CBuzzCommand();
 	bool InitializeBuzzControllers();
@@ -24,6 +24,7 @@ public:
 	uint8_t IdentifyBuzzer(uint8_t JoyButton);
 	BuzzButton IdentifyButton(uint8_t JoyButton);
 	void InitializeLogger(shared_ptr<spdlog::logger> &gLogger);
+	//Variables
 	SDL_Joystick* sdlGameController;
 
 private:

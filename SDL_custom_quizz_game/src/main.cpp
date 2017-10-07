@@ -19,7 +19,7 @@ using namespace std;
 
 //Font Sizes
 const int QUESTION_FONT_SIZE = 36;
-const int ANSWARE_FONT_SIZE = 24;
+const int ANSWER_FONT_SIZE = 24;
 
 const string strNameBuzzControllers = "Buzz";
 
@@ -56,10 +56,10 @@ CLTexture gSceneTextureD;
 
 //Scene textures
 CLTexture gQuestionText;
-CLTexture gAnswareA;
-CLTexture gAnswareB;
-CLTexture gAnswareC;
-CLTexture gAnswareD;
+CLTexture gAnswerA;
+CLTexture gAnswerB;
+CLTexture gAnswerC;
+CLTexture gAnswerD;
 
 bool init()
 {
@@ -204,13 +204,13 @@ bool loadQuestion()
 	return success;
 }
 
-bool loadAnswares()
+bool loadAnswers()
 {
 	//Loading success flag
 	bool success = true;
 
 	//Open the font
-	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWARE_FONT_SIZE);
+	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWER_FONT_SIZE);
 	if (gFont == NULL)
 	{
 		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
@@ -221,22 +221,22 @@ bool loadAnswares()
 		//Render text
 		SDL_Color textColor = { 0, 0, 0 };
 
-		if (!gAnswareA.loadFromRenderedText("Resposta A", textColor, gFont, gRenderer))
+		if (!gAnswerA.loadFromRenderedText("Resposta A", textColor, gFont, gRenderer))
 		{
 			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!gAnswareB.loadFromRenderedText("Resposta B", textColor, gFont, gRenderer))
+		else if (!gAnswerB.loadFromRenderedText("Resposta B", textColor, gFont, gRenderer))
 		{
 			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!gAnswareC.loadFromRenderedText("Resposta C", textColor, gFont, gRenderer))
+		else if (!gAnswerC.loadFromRenderedText("Resposta C", textColor, gFont, gRenderer))
 		{
 			gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!gAnswareD.loadFromRenderedText("Resposta D", textColor, gFont, gRenderer))
+		else if (!gAnswerD.loadFromRenderedText("Resposta D", textColor, gFont, gRenderer))
 		{
 			gMyLogger->error("Failed to render text texture!");
 			success = false;
@@ -256,10 +256,10 @@ void close()
 	gSceneTextureD.free();
 
 	gQuestionText.free();
-	gAnswareA.free();
-	gAnswareB.free();
-	gAnswareC.free();
-	gAnswareD.free();
+	gAnswerA.free();
+	gAnswerB.free();
+	gAnswerC.free();
+	gAnswerD.free();
 
 	//Close game controller
 	SDL_JoystickClose(BuzzCommand.sdlGameController);
@@ -298,9 +298,9 @@ int main(int argc, char* args[])
 		{
 			gMyLogger->error("Failed to load question!");
 		}
-		else if (!loadAnswares())
+		else if (!loadAnswers())
 		{
-			gMyLogger->error("Failed to load answares!");
+			gMyLogger->error("Failed to load answers!");
 		}
 		//Load media
 		else if (!loadMedia())
@@ -361,25 +361,25 @@ int main(int argc, char* args[])
 								int myWidthA = (gWindow.getWidth() / 2.0) - ndelta;
 								int myHeightA = (gWindow.getHeight() / 8.0) / 2.0;
 
-								//Answare A
+								//Answer A
 								gSceneTextureA.render(gRenderer, ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
 
 								int nBorderX = 20;
 								int nBorderY = gSceneTextureA.getHeight() / 2.0;
 
-								gAnswareA.render(gRenderer, nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
+								gAnswerA.render(gRenderer, nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
 
-								//Answare C
+								//Answer C
 								gSceneTextureC.render(gRenderer, ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-								gAnswareC.render(gRenderer, nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
+								gAnswerC.render(gRenderer, nBorderX + ((gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 
-								//Answare B
+								//Answer B
 								gSceneTextureB.render(gRenderer, gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
-								gAnswareB.render(gRenderer, nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
+								gAnswerB.render(gRenderer, nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
 
-								//Answare D
+								//Answer D
 								gSceneTextureD.render(gRenderer, gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-								gAnswareD.render(gRenderer, nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWARE_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
+								gAnswerD.render(gRenderer, nBorderX + gWindow.getWidth() / 2.0 + (((gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 
 								//Update screen
 								SDL_RenderPresent(gRenderer);
@@ -388,7 +388,7 @@ int main(int argc, char* args[])
 					}
 					//Handle window events
 					gWindow.handleEvent(e);
-
+					//Handle BuzzCommand Events
 					BuzzCommand.handleEvent(e);
 				}
 

@@ -14,6 +14,7 @@
     <ClInclude Include="include\CBuzzCommand.h" />
     <ClInclude Include="include\CLTexture.h" />
     <ClInclude Include="include\CLWindow.h" />
+    <ClInclude Include="include\CQuestions.h" />
     <ClInclude Include="include\SDL\begin_code.h" />
     <ClInclude Include="include\SDL\close_code.h" />
     <ClInclude Include="include\SDL\SDL.h" />
@@ -111,6 +112,7 @@
     <ClCompile Include="src\CBuzzCommand.cpp" />
     <ClCompile Include="src\CLTexture.cpp" />
     <ClCompile Include="src\CLWindow.cpp" />
+    <ClCompile Include="src\CQuestions.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -19,17 +19,16 @@ public:
 	//Functions
 	CBuzzCommand();
 	~CBuzzCommand();
-	bool InitializeBuzzControllers();
+	bool InitializeBuzzControllers(shared_ptr<spdlog::logger> &gLogger);
 	void handleEvent(SDL_Event& e);
 	uint8_t IdentifyBuzzer(uint8_t JoyButton);
 	BuzzButton IdentifyButton(uint8_t JoyButton);
-	void InitializeLogger(shared_ptr<spdlog::logger> &gLogger);
 	//Variables
 	SDL_Joystick* sdlGameController;
 
 private:
-	bool mbIsBuzzInitialized;
-	string strNameBuzzControllers;
-	shared_ptr<spdlog::logger> sdpLogger;
+	bool m_bIsBuzzInitialized;
+	string m_strNameBuzzControllers;
+	shared_ptr<spdlog::logger> m_sdpLogger;
 
 };

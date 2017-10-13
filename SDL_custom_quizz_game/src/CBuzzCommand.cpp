@@ -2,9 +2,9 @@
 
 CBuzzCommand::CBuzzCommand()
 {
-	mbIsBuzzInitialized = false;
+	m_bIsBuzzInitialized = false;
 	sdlGameController = NULL;
-	strNameBuzzControllers = "Buzz";
+	m_strNameBuzzControllers = "Buzz";
 }
 
 CBuzzCommand::~CBuzzCommand()
@@ -12,20 +12,20 @@ CBuzzCommand::~CBuzzCommand()
 
 }
 
-void CBuzzCommand::InitializeLogger(shared_ptr<spdlog::logger> &gLogger)
-{
-	sdpLogger = gLogger;
-}
-
-bool CBuzzCommand::InitializeBuzzControllers()
+bool CBuzzCommand::InitializeBuzzControllers(shared_ptr<spdlog::logger> &gLogger)
 {
 	bool breturn = false;
 
+	if (gLogger != NULL)
+	{
+		m_sdpLogger = gLogger;
+	}
+	
 	//Check for joysticks
 	int nNumJoysticks = SDL_NumJoysticks();
 	if (nNumJoysticks < 1)
 	{
-		sdpLogger->warn("Warning: No joysticks connected!");
+		m_sdpLogger->warn("Warning: No joysticks connected!");
 	}
 	else
 	{
@@ -35,15 +35,15 @@ bool CBuzzCommand::InitializeBuzzControllers()
 			if (cNameJoystick != NULL)
 			{
 				string strNameJoystick(cNameJoystick);
-				if (strNameJoystick.find(strNameBuzzControllers) >= 0)
+				if (strNameJoystick.find(m_strNameBuzzControllers) >= 0)
 				{
 					//Load joystick
 					sdlGameController = SDL_JoystickOpen(0);
 					if (sdlGameController != NULL)
 					{
 						breturn = true;
-						mbIsBuzzInitialized = true;
-						sdpLogger->info("Found a Buzz controller");
+						m_bIsBuzzInitialized = true;
+						m_sdpLogger->info("Found a Buzz controller");
 					}
 				}
 			}
@@ -76,33 +76,33 @@ void CBuzzCommand::handleEvent(SDL_Event& e)
 		{
 			case (BUZZ_RED) : 
 			{
-				sdpLogger->debug("Pressed Red button");
+				m_sdpLogger->info("Pressed Red button");
 				break;
 			}
 			case (BUZZ_YELLOW) :
 			{
-				sdpLogger->debug("Pressed yellow button");
+				m_sdpLogger->debug("Pressed yellow button");
 				break;
 			}
 
 			case (BUZZ_GREEN) :
 			{
-				sdpLogger->debug("Pressed green button");
+				m_sdpLogger->debug("Pressed green button");
 				break;
 			}
 			case (BUZZ_ORANGE) :
 			{
-				sdpLogger->debug("Pressed orande button");
+				m_sdpLogger->debug("Pressed orande button");
 				break;
 			}
 			case (BUZZ_BLUE) :
 			{
-				sdpLogger->debug("Pressed blue button");
+				m_sdpLogger->debug("Pressed blue button");
 				break;
 			}
 			default:
 			{
-				sdpLogger->debug("Pressed none button");
+				m_sdpLogger->debug("Pressed none button");
 				break;
 			}
 		}

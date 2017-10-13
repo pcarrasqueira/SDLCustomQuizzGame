@@ -13,6 +13,7 @@ and may not be redistributed without written permission.*/
 #include <CLWindow.h>
 #include "spdlog/spdlog.h"
 #include "CBuzzCommand.h"
+#include "CQuestions.h"
 
 using namespace spdlog;
 using namespace std;
@@ -47,6 +48,10 @@ SDL_Renderer* gRenderer = NULL;
 //Buzz Controller
 CBuzzCommand BuzzCommand;
 
+
+//Questions
+CQuestions Questions;
+
 //Scene textures
 CLTexture gSceneTexture;
 CLTexture gSceneTextureA;
@@ -72,7 +77,7 @@ bool init()
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
 	{
-		gMyLogger->error("SDL could not initialize! SDL Error: %s", SDL_GetError());
+		gMyLogger->error("SDL could not initialize! SDL Error: {}", SDL_GetError());
 		success = false;
 	}
 	else
@@ -86,7 +91,7 @@ bool init()
 		//Create window
 		if (!gWindow.init())
 		{
-			gMyLogger->error("Window could not be created! SDL Error: %s", SDL_GetError());
+			gMyLogger->error("Window could not be created! SDL Error: {}", SDL_GetError());
 			success = false;
 		}
 		else
@@ -95,7 +100,7 @@ bool init()
 			gRenderer = gWindow.createRenderer();
 			if (gRenderer == NULL)
 			{
-				gMyLogger->error("Renderer could not be created! SDL Error: %s", SDL_GetError());
+				gMyLogger->error("Renderer could not be created! SDL Error: {}", SDL_GetError());
 				success = false;
 			}
 			else
@@ -107,13 +112,13 @@ bool init()
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags))
 				{
-					gMyLogger->error("SDL_image could not initialize! SDL_image Error: %s", IMG_GetError());
+					gMyLogger->error("SDL_image could not initialize! SDL_image Error: {}", IMG_GetError());
 					success = false;
 				}
 				//Initialize SDL_ttf
 				if (TTF_Init() == -1)
 				{
-					gMyLogger->error("SDL_ttf could not initialize! SDL_ttf Error: %s", TTF_GetError());
+					gMyLogger->error("SDL_ttf could not initialize! SDL_ttf Error: {}", TTF_GetError());
 					success = false;
 				}
 			}
@@ -126,12 +131,13 @@ bool init()
 void InitializeLogger(shared_ptr<spdlog::logger> &logger)
 {
 	//gMyLogger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log");
-	logger = basic_logger_mt("basic_logger", "C:/Users/pcarrasqueira/Documents/Visual Studio 2013/Projects/SDL_custom_quizz_game/Release/logs/CustomQuizz.log");
+	logger = basic_logger_mt("basic_logger", "C:/Users/pcarrasqueira/Documents/Visual Studio 2013/Projects/SDL_custom_quizz_game/Release/logs/CustomQuizz.log",true);
+	logger->set_level(level::level_enum::debug);
 	if (logger)
 	{
 		set_pattern("[%Hh:%Mm:%Ss] %v");
 		logger->info("****************************************************");
-		logger->info("*	   New instance of CustomQuizz Game             *");
+		logger->info("**	   New instance of CustomQuizz Game          **");
 		logger->info("****************************************************");
 		logger->info("");
 		set_pattern("[%Hh:%Mm:%Ss][T:%t][P:%P][%l] -  %v");
@@ -187,7 +193,7 @@ bool loadQuestion()
 	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
 	if (gFont == NULL)
 	{
-		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
+		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
 		success = false;
 	}
 	else
@@ -213,7 +219,7 @@ bool loadAnswers()
 	gFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWER_FONT_SIZE);
 	if (gFont == NULL)
 	{
-		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
+		gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
 		success = false;
 	}
 	else
@@ -288,9 +294,14 @@ int main(int argc, char* args[])
 	}
 	else
 	{
-		BuzzCommand.InitializeLogger(gMyLogger);
 
-		if (!BuzzCommand.InitializeBuzzControllers())
+		Questions.InitializeLogger(gMyLogger);
+
+		Questions.LoadQuestionsFromXML("C:/Users/pcarrasqueira/Documents/Visual Studio 2013/Projects/SDL_custom_quizz_game/SDL_custom_quizz_game/data/xml/Questions/questions.xml");
+
+		Question myQuestion = Questions.GetQuestionData();
+
+		if (!BuzzCommand.InitializeBuzzControllers(gMyLogger))
 		{
 			gMyLogger->error("Failed to initialize Buzz controllers");
 		}
@@ -408,7 +419,7 @@ int main(int argc, char* args[])
 						TTF_Font *lFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
 						if (lFont == NULL)
 						{
-							gMyLogger->error("Failed to load lazy font! SDL_ttf Error: %s", TTF_GetError());
+							gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
 						}
 						else
 						{

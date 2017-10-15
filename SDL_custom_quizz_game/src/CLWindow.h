@@ -1,3 +1,6 @@
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include <SDL.h>
 
 class CLWindow
@@ -13,7 +16,7 @@ public:
 	SDL_Renderer* createRenderer();
 
 	//Handles window events
-	void handleEvent(SDL_Event& e);
+	void HandleEvent(SDL_Event& e);
 
 	//Deallocates internals
 	void free();
@@ -43,3 +46,5 @@ private:
 
 	SDL_Renderer* mRenderer;
 };
+
+#endif

@@ -16,20 +16,14 @@
     <Filter Include="Header Files\SDL">
       <UniqueIdentifier>{a045223d-6e5b-4e74-88bc-25c4d3b4fd63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="pugixml">
-      <UniqueIdentifier>{99a44df4-4758-4d7c-977a-648e8b3feec0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\spdlog">
       <UniqueIdentifier>{3bcebf97-b7ac-448b-a2c0-eaf522def5e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pugixml">
+      <UniqueIdentifier>{99a44df4-4758-4d7c-977a-648e8b3feec0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CLTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CLWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pugixml\pugiconfig.hpp">
       <Filter>pugixml</Filter>
     </ClInclude>
@@ -303,10 +297,31 @@
     <ClInclude Include="include\SDL\SDL_video.h">
       <Filter>Header Files\SDL</Filter>
     </ClInclude>
-    <ClInclude Include="include\CBuzzCommand.h">
+    <ClInclude Include="src\CBuzzCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CQuestions.h">
+    <ClInclude Include="src\CLTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CLWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CQuestions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CQuizzGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CGameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CQuizzGameEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CMenuState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CQuestionsState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -327,6 +342,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CQuestions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CQuizzGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CQuizzGameEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CMenuState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CQuestionsState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

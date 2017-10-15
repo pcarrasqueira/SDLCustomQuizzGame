@@ -21,6 +21,7 @@ CQuestions::CQuestions()
 
 CQuestions::~CQuestions()
 {
+	m_vecQuestions.empty();
 }
 
 void CQuestions::InitializeLogger(shared_ptr<spdlog::logger> &gLogger)
@@ -90,8 +91,7 @@ bool CQuestions::LoadQuestionsFromXML(string strXMLPath)
 				break;
 			}
 			m_sdpLogger->debug("Node: \"{}\" | Value : \"{}\"", NODE_CORRECT_ANSWER, Question.nCorrectAnswerIndex);
-			
-			Question.bAlreadyDone = false;
+			//Put question in vector to use it later			
 			m_vecQuestions.push_back(Question);
 		}
 		bret = true;
@@ -104,10 +104,26 @@ bool CQuestions::LoadQuestionsFromXML(string strXMLPath)
 	return bret;
 }
 
-Question CQuestions::GetQuestionData()
+Question CQuestions::GetQuestionData(bool brand)
 {
 	int nSize = m_vecQuestions.size();
-	Question QuestionOut = m_vecQuestions[nSize-1];
-	m_vecQuestions.pop_back();
+	Question QuestionOut;
+
+	if (brand)
+	{
+		int nRandIndex = rand() % nSize;
+		QuestionOut = m_vecQuestions[nRandIndex];
+		m_vecQuestions.erase(m_vecQuestions.begin() + nRandIndex);
+	}
+	else
+	{
+		QuestionOut = m_vecQuestions[0];
+		m_vecQuestions.erase(m_vecQuestions.begin());
+	}
 	return QuestionOut;
+}
+
+int CQuestions::GetNumberQuestions()
+{
+	return m_vecQuestions.size();
 }

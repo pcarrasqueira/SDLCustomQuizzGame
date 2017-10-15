@@ -62,7 +62,7 @@ BuzzButton CBuzzCommand::IdentifyButton(uint8_t givenButton)
 	return (BuzzButton)(givenButton % 5);
 }
 
-void CBuzzCommand::handleEvent(SDL_Event& e)
+void CBuzzCommand::HandleEvent(SDL_Event& e)
 {
 	if (e.type == SDL_JOYBUTTONDOWN)
 	{

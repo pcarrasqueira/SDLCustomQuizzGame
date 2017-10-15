@@ -66,7 +66,7 @@ SDL_Renderer* CLWindow::createRenderer()
 	return mRenderer;
 }
 
-void CLWindow::handleEvent(SDL_Event& e)
+void CLWindow::HandleEvent(SDL_Event& e)
 {
 	//Window event occured
 	if (e.type == SDL_WINDOWEVENT)
@@ -151,6 +151,7 @@ void CLWindow::handleEvent(SDL_Event& e)
 			mMinimized = false;
 		}
 	}
+	
 }
 
 void CLWindow::free()

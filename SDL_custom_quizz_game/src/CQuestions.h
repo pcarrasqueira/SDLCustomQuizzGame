@@ -1,4 +1,8 @@
+#ifndef QUESTIONS_H
+#define QUESTIONS_H
+
 #include "spdlog/spdlog.h"
+#include <time.h>
 
 using namespace std;
 
@@ -16,7 +20,6 @@ struct Question{
 	string strAnswerD;
 	int nCorrectAnswerIndex;
 	QuestionType Type;
-	bool bAlreadyDone;
 };
 
 
@@ -27,9 +30,11 @@ public:
 	~CQuestions();
 	void InitializeLogger(shared_ptr<spdlog::logger> &gLogger);
 	bool LoadQuestionsFromXML(string strXMLPath);
-	Question GetQuestionData();
+	Question GetQuestionData(bool brand = false);
+	int GetNumberQuestions();
 
 private:
 	vector<Question> m_vecQuestions;
 	shared_ptr<spdlog::logger> m_sdpLogger;
 };
+#endif

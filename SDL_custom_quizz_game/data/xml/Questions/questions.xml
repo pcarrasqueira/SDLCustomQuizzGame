@@ -1,10 +1,34 @@
 <Questions>
-  <Question Type="1">
-    <QuestionText>Select answer A !</QuestionText>
-    <AnswerA>A</AnswerA>
-    <AnswerB>B</AnswerB>
-    <AnswerC>C</AnswerC>
-    <AnswerD>D</AnswerD>
-	<CorrectAnswer>A</CorrectAnswer>
-  </Question>
+	<Question Type="1">
+		<QuestionText>Select answer A !</QuestionText>
+		<AnswerA>A</AnswerA>
+		<AnswerB>B</AnswerB>
+		<AnswerC>C</AnswerC>
+		<AnswerD>D</AnswerD>
+		<CorrectAnswer>A</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Select answer B !</QuestionText>
+		<AnswerA>A</AnswerA>
+		<AnswerB>B</AnswerB>
+		<AnswerC>C</AnswerC>
+		<AnswerD>D</AnswerD>
+		<CorrectAnswer>B</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Select answer C !</QuestionText>
+		<AnswerA>A</AnswerA>
+		<AnswerB>B</AnswerB>
+		<AnswerC>C</AnswerC>
+		<AnswerD>D</AnswerD>
+		<CorrectAnswer>C</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Select answer D !</QuestionText>
+		<AnswerA>A</AnswerA>
+		<AnswerB>B</AnswerB>
+		<AnswerC>C</AnswerC>
+		<AnswerD>D</AnswerD>
+		<CorrectAnswer>D</CorrectAnswer>
+	</Question>
 </Questions>

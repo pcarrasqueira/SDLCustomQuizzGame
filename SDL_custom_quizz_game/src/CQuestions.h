@@ -3,6 +3,7 @@
 
 #include "spdlog/spdlog.h"
 #include <time.h>
+#include "CBuzzCommand.h"
 
 using namespace std;
 
@@ -18,7 +19,7 @@ struct Question{
 	string strAnswerB;
 	string strAnswerC;
 	string strAnswerD;
-	int nCorrectAnswerIndex;
+	BuzzButton CorrectAnswerIndex;
 	QuestionType Type;
 };
 

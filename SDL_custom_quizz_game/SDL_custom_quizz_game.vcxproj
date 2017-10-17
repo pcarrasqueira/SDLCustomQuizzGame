@@ -107,10 +107,12 @@
     <ClInclude Include="src\CLTexture.h" />
     <ClInclude Include="src\CLWindow.h" />
     <ClInclude Include="src\CMenuState.h" />
+    <ClInclude Include="src\CPlayers.h" />
     <ClInclude Include="src\CQuestions.h" />
     <ClInclude Include="src\CQuestionsState.h" />
     <ClInclude Include="src\CQuizzGame.h" />
     <ClInclude Include="src\CQuizzGameEngine.h" />
+    <ClInclude Include="src\CScoresState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pugixml\pugixml.cpp" />
@@ -118,10 +120,12 @@
     <ClCompile Include="src\CLTexture.cpp" />
     <ClCompile Include="src\CLWindow.cpp" />
     <ClCompile Include="src\CMenuState.cpp" />
+    <ClCompile Include="src\CPlayers.cpp" />
     <ClCompile Include="src\CQuestions.cpp" />
     <ClCompile Include="src\CQuestionsState.cpp" />
     <ClCompile Include="src\CQuizzGame.cpp" />
     <ClCompile Include="src\CQuizzGameEngine.cpp" />
+    <ClCompile Include="src\CScoresState.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

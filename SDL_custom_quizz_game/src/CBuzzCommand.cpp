@@ -1,4 +1,5 @@
 #include "CBuzzCommand.h"
+#include "CQuizzGameEngine.h"
 
 CBuzzCommand::CBuzzCommand()
 {
@@ -62,50 +63,63 @@ BuzzButton CBuzzCommand::IdentifyButton(uint8_t givenButton)
 	return (BuzzButton)(givenButton % 5);
 }
 
-void CBuzzCommand::HandleEvent(SDL_Event& e)
+void CBuzzCommand::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 {
-	if (e.type == SDL_JOYBUTTONDOWN)
+	//switch beetween states
+	switch (QuizzGameEngine->GetCurrentState())
 	{
-		SDL_JoyButtonEvent JoystickEvent = e.jbutton;
-
-		//One joystick has 4 buzzers, will get the joystick number
-		unsigned int nJoystickIndex = (int)JoystickEvent.which;
-		unsigned int nBuzzerJoystickIndex = nJoystickIndex * 4 + IdentifyBuzzer(JoystickEvent.button);
-
-		switch (IdentifyButton(JoystickEvent.button))
+	case MENU_STATE:
+		if (e.type == SDL_JOYBUTTONDOWN)
 		{
-			case (BUZZ_RED) : 
-			{
-				m_sdpLogger->info("Pressed Red button");
-				break;
-			}
-			case (BUZZ_YELLOW) :
-			{
-				m_sdpLogger->debug("Pressed yellow button");
-				break;
-			}
+			SDL_JoyButtonEvent JoystickEvent = e.jbutton;
 
-			case (BUZZ_GREEN) :
+			//One joystick has 4 buzzers, will get the joystick number
+			unsigned int nJoystickIndex = (int)JoystickEvent.which;
+			unsigned int nBuzzCommandNumber = (nJoystickIndex * 4 + IdentifyBuzzer(JoystickEvent.button)) + 1;
+
+			switch (IdentifyButton(JoystickEvent.button))
 			{
-				m_sdpLogger->debug("Pressed green button");
+			case (BUZZ_RED) :
+			{
+				if (!QuizzGameEngine->QuizzPlayers.PlayerExists(nBuzzCommandNumber))
+				{
+					QuizzGameEngine->QuizzPlayers.AddPlayer(nJoystickIndex, nBuzzCommandNumber);
+					m_sdpLogger->debug("Added Player | joystick : {} | buzzer : {} ", nJoystickIndex, nBuzzCommandNumber);
+
+					string caption = "Number of players : " + to_string(QuizzGameEngine->QuizzPlayers.GetNumPlayers());
+					SDL_SetWindowTitle(QuizzGameEngine->gWindow.GetSDLWindow(), caption.c_str());
+				}
 				break;
 			}
-			case (BUZZ_ORANGE) :
-			{
-				m_sdpLogger->debug("Pressed orande button");
-				break;
 			}
-			case (BUZZ_BLUE) :
+		}
+		break;
+	case QUESTION_STATE:
+
+		string caption = "Number of players that answered : " + to_string(QuizzGameEngine->QuizzPlayers.GetNumberOfAnswares());
+		SDL_SetWindowTitle(QuizzGameEngine->gWindow.GetSDLWindow(), caption.c_str());
+
+		if (e.type == SDL_JOYBUTTONDOWN)
+		{
+			SDL_JoyButtonEvent JoystickEvent = e.jbutton;
+
+			//One joystick has 4 buzzers, will get the joystick number
+			unsigned int nJoystickIndex = (int)JoystickEvent.which;
+			unsigned int nBuzzCommandNumber = (nJoystickIndex * 4 + IdentifyBuzzer(JoystickEvent.button)) + 1;
+
+			BuzzButton ButtonPressed = IdentifyButton(JoystickEvent.button);
+
+			if (ButtonPressed != BUZZ_RED && QuizzGameEngine->QuizzPlayers.PlayerExists(nBuzzCommandNumber))
 			{
-				m_sdpLogger->debug("Pressed blue button");
-				break;
-			}
-			default:
-			{
-				m_sdpLogger->debug("Pressed none button");
-				break;
+				if (!QuizzGameEngine->QuizzPlayers.HasEveryoneAnswered())
+				{
+					QuizzGameEngine->QuizzPlayers.SavePlayerAnswer(nBuzzCommandNumber, ButtonPressed);
+					m_sdpLogger->debug("Player nBuzzCommandNumber answered : {} ", ButtonPressed);
+				}
 			}
 		}
 
+		break;
 	}
+
 }

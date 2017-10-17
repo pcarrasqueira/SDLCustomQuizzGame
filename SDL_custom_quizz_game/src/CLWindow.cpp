@@ -3,8 +3,8 @@
 #include <sstream>
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1280;
+const int SCREEN_HEIGHT = 720;
 
 using namespace std;
 
@@ -42,19 +42,18 @@ bool CLWindow::init()
 		{
 			// On success, print the current display mode.
 			SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, current.w, current.h, current.refresh_rate);
-			//windowWidth = current.w;
-			//windowHeight = current.h;
+			windowWidth = current.w;
+			windowHeight = current.h;
 		}
 
 	}
-
-	mWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+	mWindow = SDL_CreateWindow("Number of players : 0", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_MAXIMIZED);
 	if (mWindow != NULL)
 	{
 		mMouseFocus = true;
 		mKeyboardFocus = true;
-		mWidth = SCREEN_WIDTH;
-		mHeight = SCREEN_HEIGHT;
+		mWidth = windowWidth;
+		mHeight = windowHeight;
 	}
 
 	return mWindow != NULL;
@@ -71,9 +70,6 @@ void CLWindow::HandleEvent(SDL_Event& e)
 	//Window event occured
 	if (e.type == SDL_WINDOWEVENT)
 	{
-		//Caption update flag
-		bool updateCaption = false;
-
 		switch (e.window.event)
 		{
 			//Get new dimensions and repaint on window size change
@@ -91,25 +87,21 @@ void CLWindow::HandleEvent(SDL_Event& e)
 			//Mouse entered window
 		case SDL_WINDOWEVENT_ENTER:
 			mMouseFocus = true;
-			updateCaption = true;
 			break;
 
 			//Mouse left window
 		case SDL_WINDOWEVENT_LEAVE:
 			mMouseFocus = false;
-			updateCaption = true;
 			break;
 
 			//Window has keyboard focus
 		case SDL_WINDOWEVENT_FOCUS_GAINED:
 			mKeyboardFocus = true;
-			updateCaption = true;
 			break;
 
 			//Window lost keyboard focus
 		case SDL_WINDOWEVENT_FOCUS_LOST:
 			mKeyboardFocus = false;
-			updateCaption = true;
 			break;
 
 			//Window minimized
@@ -126,14 +118,6 @@ void CLWindow::HandleEvent(SDL_Event& e)
 		case SDL_WINDOWEVENT_RESTORED:
 			mMinimized = false;
 			break;
-		}
-
-		//Update window caption with new data
-		if (updateCaption)
-		{
-			std::stringstream caption;
-			caption << "Custom Quizz Game - MouseFocus:" << ((mMouseFocus) ? "On" : "Off") << " KeyboardFocus:" << ((mKeyboardFocus) ? "On" : "Off");
-			SDL_SetWindowTitle(mWindow, caption.str().c_str());
 		}
 	}
 	//Enter exit full screen on return key
@@ -190,4 +174,9 @@ bool CLWindow::hasKeyboardFocus()
 bool CLWindow::isMinimized()
 {
 	return mMinimized;
+}
+
+SDL_Window* CLWindow::GetSDLWindow()
+{
+	return mWindow;
 }

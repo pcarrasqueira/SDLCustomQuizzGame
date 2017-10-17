@@ -30,6 +30,10 @@ public:
 	bool hasKeyboardFocus();
 	bool isMinimized();
 
+
+	//Get sdl window object
+	SDL_Window* GetSDLWindow();
+
 private:
 	//Window data
 	SDL_Window* mWindow;

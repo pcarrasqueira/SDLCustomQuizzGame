@@ -78,19 +78,19 @@ bool CQuestions::LoadQuestionsFromXML(string strXMLPath)
 			switch (cCorrectAnswer)
 			{
 			case 'A':
-				Question.nCorrectAnswerIndex = 1;
+				Question.CorrectAnswerIndex = BuzzButton::BUZZ_BLUE;
 				break;
 			case 'B':
-				Question.nCorrectAnswerIndex = 2;
+				Question.CorrectAnswerIndex = BuzzButton::BUZZ_ORANGE;
 				break;
 			case 'C':
-				Question.nCorrectAnswerIndex = 3;
+				Question.CorrectAnswerIndex = BuzzButton::BUZZ_GREEN;
 				break;
 			case 'D':
-				Question.nCorrectAnswerIndex = 4;
+				Question.CorrectAnswerIndex = BuzzButton::BUZZ_YELLOW;
 				break;
 			}
-			m_sdpLogger->debug("Node: \"{}\" | Value : \"{}\"", NODE_CORRECT_ANSWER, Question.nCorrectAnswerIndex);
+			m_sdpLogger->debug("Node: \"{}\" | Value : \"{}\"", NODE_CORRECT_ANSWER, Question.CorrectAnswerIndex);
 			//Put question in vector to use it later			
 			m_vecQuestions.push_back(Question);
 		}
@@ -109,16 +109,19 @@ Question CQuestions::GetQuestionData(bool brand)
 	int nSize = m_vecQuestions.size();
 	Question QuestionOut;
 
-	if (brand)
+	if (nSize > 0)
 	{
-		int nRandIndex = rand() % nSize;
-		QuestionOut = m_vecQuestions[nRandIndex];
-		m_vecQuestions.erase(m_vecQuestions.begin() + nRandIndex);
-	}
-	else
-	{
-		QuestionOut = m_vecQuestions[0];
-		m_vecQuestions.erase(m_vecQuestions.begin());
+		if (brand)
+		{
+			int nRandIndex = rand() % nSize;
+			QuestionOut = m_vecQuestions[nRandIndex];
+			m_vecQuestions.erase(m_vecQuestions.begin() + nRandIndex);
+		}
+		else
+		{
+			QuestionOut = m_vecQuestions[0];
+			m_vecQuestions.erase(m_vecQuestions.begin());
+		}
 	}
 	return QuestionOut;
 }

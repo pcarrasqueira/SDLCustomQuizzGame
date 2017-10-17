@@ -57,7 +57,7 @@ bool CLTexture::loadFromFile(std::string path, SDL_Renderer* Renderer)
 }
 
 #ifdef _SDL_TTF_H
-bool CLTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor, TTF_Font* Font, SDL_Renderer* Renderer)
+bool CLTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor, TTF_Font* Font, SDL_Renderer* Renderer, int wraplenght)
 {
 	//Get rid of preexisting texture
 	free();
@@ -69,7 +69,7 @@ bool CLTexture::loadFromRenderedText(std::string textureText, SDL_Color textColo
 	else
 	{
 		//Render text surface
-		SDL_Surface* textSurface = TTF_RenderText_Solid(Font, textureText.c_str(), textColor);
+		SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(Font, textureText.c_str(), textColor, wraplenght);
 		if (textSurface != NULL)
 		{
 			//Create texture from surface pixels

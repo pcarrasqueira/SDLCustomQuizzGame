@@ -10,9 +10,9 @@ bool CMenuState::Init(CQuizzGameEngine* QuizzGameEngine)
 
 	m_eState = CQuizzGameStates::MENU_STATE;
 
-	textColor = {0,0,0};
+	SDL_Color textColor = { 0, 0, 0 };
 
-	TTF_Font *lFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
+	TTF_Font *lFont = TTF_OpenFont("data//font//Ubuntu-R.ttf", QUESTION_FONT_SIZE);
 	if (lFont == NULL)
 	{
 		QuizzGameEngine->gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
@@ -20,7 +20,7 @@ bool CMenuState::Init(CQuizzGameEngine* QuizzGameEngine)
 	}
 	else
 	{
-		if (!gIntroText.loadFromRenderedText("Press space to load demo question", textColor, lFont, QuizzGameEngine->gRenderer))
+		if (!gIntroText.loadFromRenderedText("Press red button to add player and press space to start quizz", textColor, lFont, QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() - 2*(QuizzGameEngine->gWindow.getWidth() / 7.0)))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			bret = false;
@@ -46,6 +46,7 @@ void CMenuState::Resume()
 
 void CMenuState::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 {
+	QuizzGameEngine->BuzzCommand.HandleEvents(QuizzGameEngine, e);
 	switch (e.type) {
 		case SDL_QUIT:
 			QuizzGameEngine->Quit();
@@ -54,7 +55,10 @@ void CMenuState::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym) {
 			case SDLK_SPACE:
-				QuizzGameEngine->ChangeState(CQuestionsState::Instance());
+				if (QuizzGameEngine->QuizzPlayers.GetNumPlayers() > 0)
+				{
+					QuizzGameEngine->ChangeState(CQuestionsState::Instance());
+				}
 				break;
 			}
 			break;
@@ -70,31 +74,13 @@ void CMenuState::Render(CQuizzGameEngine* QuizzGameEngine)
 	//Only draw when not minimized
 	if (!QuizzGameEngine->gWindow.isMinimized())
 	{
-		//Initial screen
-
 		//Clear screen
 		SDL_SetRenderDrawColor(QuizzGameEngine->gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(QuizzGameEngine->gRenderer);
 
-		
-
-		TTF_Font *lFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
-		if (lFont == NULL)
-		{
-			QuizzGameEngine->gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
-		}
-		else
-		{
-			if (!gIntroText.loadFromRenderedText("Press space to load demo question", textColor, lFont, QuizzGameEngine->gRenderer))
-			{
-				QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
-			}
-			else
-			{
-				int nQBorderX = 0;
-				gIntroText.render(QuizzGameEngine->gRenderer, nQBorderX + ((QuizzGameEngine->gWindow.getWidth()) / 2.0) - (gIntroText.getWidth() / 2.0), ((QuizzGameEngine->gWindow.getHeight()) / 2.0) - (QUESTION_FONT_SIZE / 2.0));
-			}
-		}
+		//use TTF_SizeUTF8 to get size of string after rendered
+		int nQBorderX = QuizzGameEngine->gWindow.getWidth() / 7.0;
+		gIntroText.render(QuizzGameEngine->gRenderer, nQBorderX /*+ ((QuizzGameEngine->gWindow.getWidth()) / 2.0) - (gIntroText.getWidth() / 2.0)*/, ((QuizzGameEngine->gWindow.getHeight()) / 2.0) - (QUESTION_FONT_SIZE / 2.0));
 	}
 }
 

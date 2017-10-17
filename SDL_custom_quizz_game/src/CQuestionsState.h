@@ -3,6 +3,7 @@
 
 #include "CGameState.h"
 #include "CLTexture.h"
+#include "CQuestions.h"
 
 class CQuestionsState : public CGameState
 {
@@ -44,9 +45,15 @@ private:
 	CLTexture m_TextAnswerC;
 	CLTexture m_TextAnswerD;
 
-	bool LoadMedia(CQuizzGameEngine* QuizzGameEngine);
+	bool bIsToRender;
+	bool bIsToGetNewQuestion;
 
-	bool loadQuestion(CQuizzGameEngine* QuizzGameEngine);
-	bool loadAnswers(CQuizzGameEngine* QuizzGameEngine);
+	Question ActualQuestion;
+
+	bool LoadMedia(CQuizzGameEngine* QuizzGameEngine);
+	bool loadQuestion(CQuizzGameEngine* QuizzGameEngine, string strQuestionText);
+	bool loadAnswers(CQuizzGameEngine* QuizzGameEngine, string strAnswerA, string strAnswerB, string strAnswerC, string strAnswerD);
+
+	CQuestions Questions;
 };
 #endif

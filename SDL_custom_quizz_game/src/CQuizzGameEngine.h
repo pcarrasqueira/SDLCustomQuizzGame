@@ -5,7 +5,8 @@
 #include "spdlog/spdlog.h"
 #include <CLWindow.h>
 #include <SDL_ttf.h>
-
+#include "CPlayers.h"
+#include "CBuzzCommand.h"
 
 using namespace spdlog;
 using namespace std;
@@ -14,12 +15,11 @@ using namespace std;
 static const int QUESTION_FONT_SIZE = 36;
 static const int ANSWER_FONT_SIZE = 24;
 
-static const string strNameBuzzControllers = "Buzz";
-
 typedef enum {
 	INVALID_STATE = -1,
 	MENU_STATE = 0,
-	QUESTION_STATE = 1
+	QUESTION_STATE = 1,
+	RESULTS_STATE = 2
 } CQuizzGameStates;
 
 
@@ -45,6 +45,11 @@ public:
 	void Quit() { m_bRunning = false; }
 	CQuizzGameStates GetCurrentState() { return m_eCurrentState; }
 
+	//Buzz Controller
+	CBuzzCommand BuzzCommand;
+
+	//Quizz Players
+	CPlayers QuizzPlayers;
 
 	//Globally used logger
 	shared_ptr<spdlog::logger> gMyLogger;

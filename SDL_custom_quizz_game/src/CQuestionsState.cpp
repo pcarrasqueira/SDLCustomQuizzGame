@@ -1,15 +1,15 @@
 #include "CQuestionsState.h"
-
+#include "CScoresState.h"
 
 CQuestionsState CQuestionsState::m_QuestionsState;
 
-bool CQuestionsState::loadQuestion(CQuizzGameEngine* QuizzGameEngine)
+bool CQuestionsState::loadQuestion(CQuizzGameEngine* QuizzGameEngine, string strQuestionText)
 {
 	//Loading success flag
 	bool success = true;
 
 	//Open the font
-	TTF_Font* lFont = TTF_OpenFont("data//font//kenvector_future_thin.ttf", QUESTION_FONT_SIZE);
+	TTF_Font* lFont = TTF_OpenFont("data//font//Ubuntu-R.ttf", QUESTION_FONT_SIZE);
 	if (lFont == NULL)
 	{
 		QuizzGameEngine->gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
@@ -19,7 +19,7 @@ bool CQuestionsState::loadQuestion(CQuizzGameEngine* QuizzGameEngine)
 	{
 		//Render text
 		SDL_Color textColor = { 0, 0, 0 };
-		if (!m_TextQuestion.loadFromRenderedText("Qual destas é a resposta certa?", textColor, lFont, QuizzGameEngine->gRenderer))
+		if (!m_TextQuestion.loadFromRenderedText(strQuestionText, textColor, lFont, QuizzGameEngine->gRenderer, m_ImageQuestion.getWidth()))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			success = false;
@@ -29,13 +29,13 @@ bool CQuestionsState::loadQuestion(CQuizzGameEngine* QuizzGameEngine)
 	return success;
 }
 
-bool CQuestionsState::loadAnswers(CQuizzGameEngine* QuizzGameEngine)
+bool CQuestionsState::loadAnswers(CQuizzGameEngine* QuizzGameEngine, string strAnswerA, string strAnswerB, string strAnswerC, string strAnswerD)
 {
 	//Loading success flag
 	bool success = true;
 
 	//Open the font
-	TTF_Font*  lFont  = TTF_OpenFont("data//font//kenvector_future_thin.ttf", ANSWER_FONT_SIZE);
+	TTF_Font*  lFont  = TTF_OpenFont("data//font//Ubuntu-R.ttf", ANSWER_FONT_SIZE);
 	if (lFont == NULL)
 	{
 		QuizzGameEngine->gMyLogger->error("Failed to load lazy font! SDL_ttf Error: {}", TTF_GetError());
@@ -46,22 +46,22 @@ bool CQuestionsState::loadAnswers(CQuizzGameEngine* QuizzGameEngine)
 		//Render text
 		SDL_Color textColor = { 0, 0, 0 };
 
-		if (!m_TextAnswerA.loadFromRenderedText("Resposta A", textColor, lFont, QuizzGameEngine->gRenderer))
+		if (!m_TextAnswerA.loadFromRenderedText(strAnswerA, textColor, lFont, QuizzGameEngine->gRenderer, m_ImageAnswerA.getWidth()))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!m_TextAnswerB.loadFromRenderedText("Resposta B", textColor, lFont, QuizzGameEngine->gRenderer))
+		else if (!m_TextAnswerB.loadFromRenderedText(strAnswerB, textColor, lFont, QuizzGameEngine->gRenderer, m_ImageAnswerB.getWidth()))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!m_TextAnswerC.loadFromRenderedText("Resposta C", textColor, lFont, QuizzGameEngine->gRenderer))
+		else if (!m_TextAnswerC.loadFromRenderedText(strAnswerC, textColor, lFont, QuizzGameEngine->gRenderer, m_ImageAnswerC.getWidth()))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			success = false;
 		}
-		else if (!m_TextAnswerD.loadFromRenderedText("Resposta D", textColor, lFont, QuizzGameEngine->gRenderer))
+		else if (!m_TextAnswerD.loadFromRenderedText(strAnswerD, textColor, lFont, QuizzGameEngine->gRenderer, m_ImageAnswerD.getWidth()))
 		{
 			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
 			success = false;
@@ -77,16 +77,19 @@ bool CQuestionsState::Init(CQuizzGameEngine* QuizzGameEngine)
 
 	m_eState = CQuizzGameStates::QUESTION_STATE;
 
+	bIsToRender = false;
+	bIsToGetNewQuestion = true;
+
 	if (!LoadMedia(QuizzGameEngine))
 	{
 		bret = false;
 	}
-	else if (!loadQuestion(QuizzGameEngine))
+	//Initialize and load questions
+	Questions.InitializeLogger(QuizzGameEngine->gMyLogger);
+
+	if (!Questions.LoadQuestionsFromXML("data/xml/Questions/questions.xml"))
 	{
-		bret = false;
-	}
-	else if (!loadAnswers(QuizzGameEngine))
-	{
+		QuizzGameEngine->gMyLogger->error("Failed to LoadQuestionsFromXML");
 		bret = false;
 	}
 	return bret;
@@ -120,28 +123,49 @@ void CQuestionsState::Resume()
 
 void CQuestionsState::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 {
+	QuizzGameEngine->BuzzCommand.HandleEvents(QuizzGameEngine, e);
 	switch (e.type) {
 	case SDL_QUIT:
 		QuizzGameEngine->Quit();
-		break;
-
-	case SDL_KEYDOWN:
-		switch (e.key.keysym.sym) {
-			/*	case SDLK_SPACE:
-
-			break;
-
-			case SDLK_ESCAPE:
-			QuizzGameEngine->Quit();
-			break;*/
-		}
 		break;
 	}
 }
 
 void CQuestionsState::Update(CQuizzGameEngine* QuizzGameEngine)
 {
+	//load question and answers
+	if (bIsToGetNewQuestion)
+	{
+		if (Questions.GetNumberQuestions() > 0)
+		{
+			ActualQuestion = Questions.GetQuestionData(true);
+			if (!loadQuestion(QuizzGameEngine, ActualQuestion.strQuestion))
+			{
+				QuizzGameEngine->gMyLogger->error("Failed to loadQuestion");
+			}
+			else if (!loadAnswers(QuizzGameEngine, ActualQuestion.strAnswerA, ActualQuestion.strAnswerB, ActualQuestion.strAnswerC, ActualQuestion.strAnswerD))
+			{
+				QuizzGameEngine->gMyLogger->error("Failed to loadAnswers");
+			}
+			bIsToRender = true;
+		}
+		//Game over, lets show results
+		else
+		{
+			QuizzGameEngine->ChangeState(CScoresState::Instance());
+		}
+	}
 
+	//check if everyone answered, update points and load new question
+	if (QuizzGameEngine->QuizzPlayers.HasEveryoneAnswered())
+	{
+		QuizzGameEngine->QuizzPlayers.UpdatePlayersScores(ActualQuestion.CorrectAnswerIndex);
+
+		QuizzGameEngine->QuizzPlayers.ClearAnswers();
+
+		bIsToGetNewQuestion = true;
+		bIsToRender = false;
+	}
 }
 
 void CQuestionsState::Render(CQuizzGameEngine* QuizzGameEngine)
@@ -149,53 +173,58 @@ void CQuestionsState::Render(CQuizzGameEngine* QuizzGameEngine)
 	//Only draw when not minimized
 	if (!QuizzGameEngine->gWindow.isMinimized())
 	{
-		//Clear screen
-		SDL_SetRenderDrawColor(QuizzGameEngine->gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(QuizzGameEngine->gRenderer);
-
-		//Render text textures
-		int myWidth = QuizzGameEngine->gWindow.getWidth();
-		int myHeight = 3 * QUESTION_FONT_SIZE;
-
-		if (myHeight > QuizzGameEngine->gWindow.getHeight() / 4.0)
+		if (bIsToRender)
 		{
-			myHeight = QuizzGameEngine->gWindow.getHeight() / 4.0;
+			bIsToGetNewQuestion = false;
+
+			//Clear screen
+			SDL_SetRenderDrawColor(QuizzGameEngine->gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+			SDL_RenderClear(QuizzGameEngine->gRenderer);
+
+			//Render text textures
+			int myWidth = QuizzGameEngine->gWindow.getWidth();
+			int myHeight = 3 * QUESTION_FONT_SIZE;
+
+			if (myHeight > QuizzGameEngine->gWindow.getHeight() / 4.0)
+			{
+				myHeight = QuizzGameEngine->gWindow.getHeight() / 4.0;
+			}
+
+			//Question
+			m_ImageQuestion.render(QuizzGameEngine->gRenderer, (QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0, (QuizzGameEngine->gWindow.getHeight()) / 4.0, myWidth, myHeight);
+
+			int nQBorderX = 20;
+			int nQBorderY = m_ImageQuestion.getHeight() / 2.0;
+
+			m_TextQuestion.render(QuizzGameEngine->gRenderer, nQBorderX + ((QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0) + 50, nQBorderY - (QUESTION_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight()) / 4.0));
+
+			int ndelta = 15;
+			int myWidthA = (QuizzGameEngine->gWindow.getWidth() / 2.0) - ndelta;
+			int myHeightA = (QuizzGameEngine->gWindow.getHeight() / 8.0) / 2.0;
+
+			//Answer A
+			m_ImageAnswerA.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
+
+			int nBorderX = 20;
+			int nBorderY = m_ImageAnswerA.getHeight() / 2.0;
+
+			m_TextAnswerA.render(QuizzGameEngine->gRenderer, nBorderX + ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
+
+			//Answer C
+			m_ImageAnswerC.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
+
+			m_TextAnswerC.render(QuizzGameEngine->gRenderer, nBorderX + ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
+
+			//Answer B
+			m_ImageAnswerB.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
+
+			m_TextAnswerB.render(QuizzGameEngine->gRenderer, nBorderX + QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
+
+			//Answer D
+			m_ImageAnswerD.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
+
+			m_TextAnswerD.render(QuizzGameEngine->gRenderer, nBorderX + QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 		}
-
-		//Question
-		m_ImageQuestion.render(QuizzGameEngine->gRenderer, (QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0, (QuizzGameEngine->gWindow.getHeight()) / 4.0, myWidth, myHeight);
-
-		int nQBorderX = 20;
-		int nQBorderY = m_ImageQuestion.getHeight() / 2.0;
-
-		m_TextQuestion.render(QuizzGameEngine->gRenderer, nQBorderX + ((QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0) + 50, nQBorderY - (QUESTION_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight()) / 4.0));
-
-		int ndelta = 15;
-		int myWidthA = (QuizzGameEngine->gWindow.getWidth() / 2.0) - ndelta;
-		int myHeightA = (QuizzGameEngine->gWindow.getHeight() / 8.0) / 2.0;
-
-		//Answer A
-		m_ImageAnswerA.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
-
-		int nBorderX = 20;
-		int nBorderY = m_ImageAnswerA.getHeight() / 2.0;
-
-		m_TextAnswerA.render(QuizzGameEngine->gRenderer, nBorderX + ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
-
-		//Answer C
-		m_ImageAnswerC.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-		
-		m_TextAnswerC.render(QuizzGameEngine->gRenderer, nBorderX + ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
-
-		//Answer B
-		m_ImageAnswerB.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
-		
-		m_TextAnswerB.render(QuizzGameEngine->gRenderer, nBorderX + QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0));
-
-		//Answer D
-		m_ImageAnswerD.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
-		
-		m_TextAnswerD.render(QuizzGameEngine->gRenderer, nBorderX + QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), nBorderY - (ANSWER_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0));
 	}
 }
 

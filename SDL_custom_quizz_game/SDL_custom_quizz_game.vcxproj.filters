@@ -22,6 +22,9 @@
     <Filter Include="pugixml">
       <UniqueIdentifier>{99a44df4-4758-4d7c-977a-648e8b3feec0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\States">
+      <UniqueIdentifier>{fec1e0de-d1c9-46cb-bb6e-5399bb4a0736}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pugixml\pugiconfig.hpp">
@@ -319,10 +322,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CMenuState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\States</Filter>
     </ClInclude>
     <ClInclude Include="src\CQuestionsState.h">
+      <Filter>Source Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CPlayers.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CScoresState.h">
+      <Filter>Source Files\States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -351,10 +360,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CMenuState.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\States</Filter>
     </ClCompile>
     <ClCompile Include="src\CQuestionsState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPlayers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CScoresState.cpp">
+      <Filter>Source Files\States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

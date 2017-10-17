@@ -1,10 +1,11 @@
-#ifndef MENU_STATE_H
-#define MENU_STATE_H
+#ifndef SCORES_STATE_H
+#define SCORES_STATE_H
 
 #include "CGameState.h"
 #include "CLTexture.h"
+#include <vector>
 
-class CMenuState : public CGameState
+class CScoresState : public CGameState
 {
 public:
 	bool Init(CQuizzGameEngine* QuizzGameEngine);
@@ -17,19 +18,22 @@ public:
 	void Update(CQuizzGameEngine* QuizzGameEngine);
 	void Render(CQuizzGameEngine* QuizzGameEngine);
 
-	static CMenuState* Instance() {
-		return &m_MenuState;
+	static CScoresState* Instance() {
+		return &m_ScoresState;
 	}
 
 	CQuizzGameStates GetStateEnum();
 
 protected:
-	CMenuState() { }
+	CScoresState() { }
 
 private:
-	static CMenuState m_MenuState;
+	static CScoresState m_ScoresState;
 	CQuizzGameStates m_eState;
 
-	CLTexture gIntroText;
+	CLTexture gScoresPlayer1Text;
+	CLTexture gScoresPlayer2Text;
+	CLTexture gScoresPlayer3Text;
+	CLTexture gScoresPlayer4Text;
 };
 #endif

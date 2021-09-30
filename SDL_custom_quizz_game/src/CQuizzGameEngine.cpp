@@ -9,7 +9,7 @@
 void CQuizzGameEngine::InitializeLogger(shared_ptr<spdlog::logger> &logger)
 {
 	//gMyLogger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log");
-	logger = basic_logger_mt("basic_logger", "C:/Users/pcarrasqueira/Documents/Visual Studio 2013/Projects/SDL_custom_quizz_game/Release/logs/CustomQuizz.log", true);
+	logger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log", true);
 	logger->set_level(level::level_enum::debug);
 	logger->flush_on(level::level_enum::debug);
 	if (logger)
@@ -88,6 +88,10 @@ bool CQuizzGameEngine::Init()
 		if (!BuzzCommand.InitializeBuzzControllers(gMyLogger))
 		{
 			gMyLogger->error("Failed to initialize Buzz controllers");
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+				"Buzz controller missing",
+				"Please connect Buzz controller       ",
+				NULL);
 			success = false;
 		}
 

@@ -1,34 +1,82 @@
 <Questions>
 	<Question Type="1">
-		<QuestionText>Select answer A !</QuestionText>
-		<AnswerA>A</AnswerA>
-		<AnswerB>B</AnswerB>
-		<AnswerC>C</AnswerC>
-		<AnswerD>D</AnswerD>
+		<QuestionText>No que diz respeito aos elementos constituintes de uma articulação, qual é aquele que aumenta a extensão e a profundidade, estando intimamente fixo a uma superfície articular?</QuestionText>
+		<AnswerA>Labrum articular</AnswerA>
+		<AnswerB>Menisco</AnswerB>
+		<AnswerC>Disco</AnswerC>
+		<AnswerD>Sinovial</AnswerD>
 		<CorrectAnswer>A</CorrectAnswer>
 	</Question>
 	<Question Type="1">
-		<QuestionText>Select answer B !</QuestionText>
-		<AnswerA>A</AnswerA>
-		<AnswerB>B</AnswerB>
-		<AnswerC>C</AnswerC>
-		<AnswerD>D</AnswerD>
-		<CorrectAnswer>B</CorrectAnswer>
+		<QuestionText>Quais são vértebras que tem um forámen vertebral triangular?</QuestionText>
+		<AnswerA>Vértebras Cervicais</AnswerA>
+		<AnswerB>Vértebras Torácicas</AnswerB>
+		<AnswerC>Vértebras Lombares</AnswerC>
+		<AnswerD>A resposta A e C estão correctas</AnswerD>
+		<CorrectAnswer>D</CorrectAnswer>
 	</Question>
 	<Question Type="1">
-		<QuestionText>Select answer C !</QuestionText>
-		<AnswerA>A</AnswerA>
-		<AnswerB>B</AnswerB>
-		<AnswerC>C</AnswerC>
-		<AnswerD>D</AnswerD>
+		<QuestionText>A articulação Atlanto-axial propriamente dita é uma:</QuestionText>
+		<AnswerA>Bicondilartrose</AnswerA>
+		<AnswerB>Artrodia</AnswerB>
+		<AnswerC>Heteroartrose</AnswerC>
+		<AnswerD>Trocartrose</AnswerD>
 		<CorrectAnswer>C</CorrectAnswer>
 	</Question>
 	<Question Type="1">
-		<QuestionText>Select answer D !</QuestionText>
-		<AnswerA>A</AnswerA>
-		<AnswerB>B</AnswerB>
-		<AnswerC>C</AnswerC>
-		<AnswerD>D</AnswerD>
+		<QuestionText>O músculo elevador da escápula tem como inserções superiores:</QuestionText>
+		<AnswerA>Processo jugular do occipital</AnswerA>
+		<AnswerB>Processos transversos de C3 a C6</AnswerB>
+		<AnswerC>Processos transversos de C1 a C4</AnswerC>
+		<AnswerD>Ângulo superior da escápula</AnswerD>
+		<CorrectAnswer>C</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Qual destes músculos é um músculo digástrico:</QuestionText>
+		<AnswerA>Músculo Milo-Hioideu</AnswerA>
+		<AnswerB> Músculo Tiro-Hioideu</AnswerB>
+		<AnswerC>Músculo Escaleno Médio</AnswerC>
+		<AnswerD>Músculo Homo-Hioideu</AnswerD>
+		<CorrectAnswer>D</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Qual destes músculos auxilia na insipiração forçada:</QuestionText>
+		<AnswerA>Músculo Serratus Posterior e Superior</AnswerA>
+		<AnswerB>Músculo Serratus Posterior e Inferior</AnswerB>
+		<AnswerC>Músculo Quadrado lombar</AnswerC>
+		<AnswerD>Músculo pequeno peitoral</AnswerD>
+		<CorrectAnswer>A</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>O ligamento inguinal é formado por:</QuestionText>
+		<AnswerA>Aponevrose do músculo oblíquo interno</AnswerA>
+		<AnswerB>Aponevrose do músculo transversos</AnswerB>
+		<AnswerC>Aponevrose do músculo recto abdominal</AnswerC>
+		<AnswerD>Aponevrose do músculo oblíquo externo</AnswerD>
+		<CorrectAnswer>D</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>A artéria torácica interna é ramo colateral de que artéria:</QuestionText>
+		<AnswerA>Artéria escapular dorsal</AnswerA>
+		<AnswerB>Artéria subclávia</AnswerB>
+		<AnswerC>Artéria aorta descendente</AnswerC>
+		<AnswerD>Artéria vertebral</AnswerD>
+		<CorrectAnswer>B</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>As artérias ilíacas externas terminam:</QuestionText>
+		<AnswerA>Na articulação sacro-ilíaca</AnswerA>
+		<AnswerB>No anel femoral</AnswerB>
+		<AnswerC>Na grande incisura ciática</AnswerC>
+		<AnswerD>Hiato aórtico do diafragma</AnswerD>
+		<CorrectAnswer>B</CorrectAnswer>
+	</Question>
+	<Question Type="1">
+		<QuestionText>Qual destas veias é afluente da veia ázigos:</QuestionText>
+		<AnswerA>Veia gástrica direita</AnswerA>
+		<AnswerB>Veia lombar ascendente</AnswerB>
+		<AnswerC>Veia supra-renal direita </AnswerC>
+		<AnswerD>Veia hemiázigos</AnswerD>
 		<CorrectAnswer>D</CorrectAnswer>
 	</Question>
 </Questions>

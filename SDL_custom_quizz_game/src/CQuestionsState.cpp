@@ -92,6 +92,36 @@ bool CQuestionsState::Init(CQuizzGameEngine* QuizzGameEngine)
 		QuizzGameEngine->gMyLogger->error("Failed to LoadQuestionsFromXML");
 		bret = false;
 	}
+
+
+	//Render text textures
+	int myWidth = QuizzGameEngine->gWindow.getWidth();
+	int myHeight = 3 * QUESTION_FONT_SIZE;
+
+	if (myHeight > QuizzGameEngine->gWindow.getHeight() / 4.0)
+	{
+		myHeight = QuizzGameEngine->gWindow.getHeight() / 4.0;
+	}
+
+	int ndelta = 15;
+	int myWidthA = (QuizzGameEngine->gWindow.getWidth() / 2.0) - ndelta;
+	int myHeightA = (QuizzGameEngine->gWindow.getHeight() / 8.0) / 2.0;
+
+	//Question
+	m_ImageQuestion.render(QuizzGameEngine->gRenderer, (QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0, (QuizzGameEngine->gWindow.getHeight()) / 4.0, myWidth, myHeight);
+
+	//Answer A
+	m_ImageAnswerA.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
+
+	//Answer C
+	m_ImageAnswerC.render(QuizzGameEngine->gRenderer, ((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0, ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
+
+	//Answer B
+	m_ImageAnswerB.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 1.0 / 8.0), myWidthA, myHeightA);
+
+	//Answer D
+	m_ImageAnswerD.render(QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() / 2.0 + (((QuizzGameEngine->gWindow.getWidth() / 2.0) - myWidthA) / 2.0), ((QuizzGameEngine->gWindow.getHeight() / 2.0) + myHeightA) *(1 + 4.0 / 8.0), myWidthA, myHeightA);
+
 	return bret;
 }
 
@@ -138,7 +168,7 @@ void CQuestionsState::Update(CQuizzGameEngine* QuizzGameEngine)
 	{
 		if (Questions.GetNumberQuestions() > 0)
 		{
-			ActualQuestion = Questions.GetQuestionData(true);
+			ActualQuestion = Questions.GetQuestionData(false);
 			if (!loadQuestion(QuizzGameEngine, ActualQuestion.strQuestion))
 			{
 				QuizzGameEngine->gMyLogger->error("Failed to loadQuestion");
@@ -194,9 +224,9 @@ void CQuestionsState::Render(CQuizzGameEngine* QuizzGameEngine)
 			m_ImageQuestion.render(QuizzGameEngine->gRenderer, (QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0, (QuizzGameEngine->gWindow.getHeight()) / 4.0, myWidth, myHeight);
 
 			int nQBorderX = 20;
-			int nQBorderY = m_ImageQuestion.getHeight() / 2.0;
+			int nQBorderY = (m_ImageQuestion.getHeight() / 2.0);
 
-			m_TextQuestion.render(QuizzGameEngine->gRenderer, nQBorderX + ((QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0) + 50, nQBorderY - (QUESTION_FONT_SIZE / 2.0) + ((QuizzGameEngine->gWindow.getHeight()) / 4.0));
+			m_TextQuestion.render(QuizzGameEngine->gRenderer, nQBorderX + ((QuizzGameEngine->gWindow.getWidth() - myWidth) / 2.0) + 50, nQBorderY - (QUESTION_FONT_SIZE ) + ((QuizzGameEngine->gWindow.getHeight()) / 4.0));
 
 			int ndelta = 15;
 			int myWidthA = (QuizzGameEngine->gWindow.getWidth() / 2.0) - ndelta;

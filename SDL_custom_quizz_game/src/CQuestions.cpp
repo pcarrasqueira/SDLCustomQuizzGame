@@ -1,5 +1,7 @@
 #include "CQuestions.h"
 #include "pugixml.hpp"
+#include <locale>
+#include <codecvt>
 
 using namespace pugi;
 
@@ -61,7 +63,19 @@ bool CQuestions::LoadQuestionsFromXML(string strXMLPath)
 					}
 				}
 			}
-			//Let's get question text
+
+			//TODO : cange encoding
+			////Let's get question text
+			//string strUTF8 = it->child_value(NODE_QUESTION_TEXT);
+
+			//// convert UTF-8 string to wstring
+			//std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
+			//wstring strUTF16 = myconv.from_bytes(strUTF8);
+			//
+			////Copy wstring content to string
+			//std::string temp(strUTF16.length(), ' ');
+			//std::copy(strUTF16.begin(), strUTF16.end(), temp.begin());
+
 			Question.strQuestion = it->child_value(NODE_QUESTION_TEXT);
 			m_sdpLogger->debug("Node: \"{}\" | Value : \"{}\"", NODE_QUESTION_TEXT, Question.strQuestion);
 			//Let's get answers tex

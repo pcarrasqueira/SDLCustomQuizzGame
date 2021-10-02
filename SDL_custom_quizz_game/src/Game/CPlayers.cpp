@@ -30,6 +30,11 @@ void CPlayers::AddPlayer(int n_joystick_index, int n_buzz_index)
 	m_vecPlayers.push_back(PlayerToAdd);
 }
 
+void CPlayers::RemovePlayer(int n_buzz_index)
+{
+	m_vecPlayers.erase(m_vecPlayers.begin() + (n_buzz_index - 1));
+}
+
 int CPlayers::GetNumPlayers()
 {
 	return m_vecPlayers.size();
@@ -128,4 +133,8 @@ long CPlayers::GetPlayerScore(int n_player_number)
 			return it->lScore;
 		}
 	}
+}
+
+void CPlayers::ClearPlayers() {
+	m_vecPlayers.clear();
 }

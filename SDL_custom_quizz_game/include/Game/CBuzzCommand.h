@@ -2,17 +2,9 @@
 #define BUZZ_COMMAND_H
 #include <SDL.h>
 #include "spdlog/spdlog.h"
+#include "BuzzButtons.h"
 
 using namespace std;
-
-
-typedef enum {
-	BUZZ_RED = 0,    // invalid answer
-	BUZZ_YELLOW = 1, //  D
-	BUZZ_GREEN = 2, //  C
-	BUZZ_ORANGE = 3, // B
-	BUZZ_BLUE = 4 // A
-} BuzzButton;
 
 
 class CQuizzGameEngine;

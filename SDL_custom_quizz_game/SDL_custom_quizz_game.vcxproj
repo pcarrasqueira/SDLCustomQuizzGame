@@ -11,7 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Game\BuzzButtons.h" />
     <ClInclude Include="include\Game\CBuzzCommand.h" />
+    <ClInclude Include="include\Game\CKeyboardCommad.h" />
     <ClInclude Include="include\Game\CPlayers.h" />
     <ClInclude Include="include\Game\CQuestions.h" />
     <ClInclude Include="include\Game\CQuizzGame.h" />
@@ -117,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="pugixml\pugixml.cpp" />
     <ClCompile Include="src\Game\CBuzzCommand.cpp" />
+    <ClCompile Include="src\Game\CkeyboardCommand.cpp" />
     <ClCompile Include="src\Game\CPlayers.cpp" />
     <ClCompile Include="src\Game\CQuestions.cpp" />
     <ClCompile Include="src\Game\CQuizzGame.cpp" />
@@ -175,7 +178,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)\lib\x86\SDL2.dll” “$(OutDir)SDL2.dll”</Command>
+      <Command>copy "$(ProjectDir)\lib\x86\*.dll” “$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

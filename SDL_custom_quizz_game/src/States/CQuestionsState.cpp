@@ -154,6 +154,8 @@ void CQuestionsState::Resume()
 void CQuestionsState::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 {
 	QuizzGameEngine->BuzzCommand.HandleEvents(QuizzGameEngine, e);
+	QuizzGameEngine->KeyboardCommand.HandleEvents(QuizzGameEngine, e);
+
 	switch (e.type) {
 	case SDL_QUIT:
 		QuizzGameEngine->Quit();

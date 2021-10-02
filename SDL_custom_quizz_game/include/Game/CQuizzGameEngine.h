@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 #include "CPlayers.h"
 #include "CBuzzCommand.h"
+#include "CKeyboardCommad.h"
 
 using namespace spdlog;
 using namespace std;
@@ -48,6 +49,9 @@ public:
 	//Buzz Controller
 	CBuzzCommand BuzzCommand;
 
+	//Keyboard Controller
+	CKeyboardCommad KeyboardCommand;
+
 	//Quizz Players
 	CPlayers QuizzPlayers;
 
@@ -59,6 +63,8 @@ public:
 	CLWindow gWindow;
 	//Globally used Renderer
 	SDL_Renderer* gRenderer = NULL;
+
+	bool gUsingKeyboard = false;
 
 
 protected:

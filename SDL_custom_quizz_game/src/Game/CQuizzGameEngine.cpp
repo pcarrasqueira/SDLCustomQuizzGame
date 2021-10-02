@@ -4,23 +4,34 @@
 #include <SDL_image.h>
 #include <stdio.h>
 #include "CBuzzCommand.h"
+#include "CKeyboardCommad.h"
 
 
 void CQuizzGameEngine::InitializeLogger(shared_ptr<spdlog::logger> &logger)
 {
-	//gMyLogger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log");
-	logger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log", true);
-	logger->set_level(level::level_enum::debug);
-	logger->flush_on(level::level_enum::debug);
-	if (logger)
-	{
-		set_pattern("[%Hh:%Mm:%Ss] %v");
-		logger->info("****************************************************");
-		logger->info("**	   New instance of CustomQuizz Game          **");
-		logger->info("****************************************************");
-		logger->info("");
-		set_pattern("[%Hh:%Mm:%Ss][T:%t][P:%P][%l] -  %v");
+	bool bCreatedDir = true;
+
+	if (!CreateDirectory("logs", NULL)) {
+		if (GetLastError() != ERROR_ALREADY_EXISTS) {
+			bCreatedDir = false;
+		}	
 	}
+
+	if (bCreatedDir) {
+		logger = basic_logger_mt("basic_logger", "logs/CustomQuizz.log", true);
+		logger->set_level(level::level_enum::debug);
+		logger->flush_on(level::level_enum::debug);
+		if (logger)
+		{
+			set_pattern("[%Hh:%Mm:%Ss] %v");
+			logger->info("****************************************************");
+			logger->info("**	   New instance of CustomQuizz Game          **");
+			logger->info("****************************************************");
+			logger->info("");
+			set_pattern("[%Hh:%Mm:%Ss][T:%t][P:%P][%l] -  %v");
+		}
+	}
+
 }
 
 //Start up SDL and create window
@@ -90,9 +101,10 @@ bool CQuizzGameEngine::Init()
 			gMyLogger->error("Failed to initialize Buzz controllers");
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
 				"Buzz controller missing",
-				"Please connect Buzz controller       ",
+				"Will use keyboard for two players       ",
 				NULL);
-			success = false;
+			gUsingKeyboard = true;
+			KeyboardCommand.InitializeKeyboard(gMyLogger);
 		}
 
 		//Initialize Players logger

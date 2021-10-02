@@ -20,10 +20,19 @@ bool CMenuState::Init(CQuizzGameEngine* QuizzGameEngine)
 	}
 	else
 	{
-		if (!gIntroText.loadFromRenderedText("Press red button to add player and press space to start quizz", textColor, lFont, QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() - 2*(QuizzGameEngine->gWindow.getWidth() / 7.0)))
-		{
-			QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
-			bret = false;
+		if (QuizzGameEngine->gUsingKeyboard) {
+			if (!gIntroText.loadFromRenderedText("Press + button to add player, - to remove player and press space to start quizz", textColor, lFont, QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() - 2 * (QuizzGameEngine->gWindow.getWidth() / 7.0)))
+			{
+				QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
+				bret = false;
+			}
+		}
+		else {
+			if (!gIntroText.loadFromRenderedText("Press red button to add player and press space to start quizz", textColor, lFont, QuizzGameEngine->gRenderer, QuizzGameEngine->gWindow.getWidth() - 2 * (QuizzGameEngine->gWindow.getWidth() / 7.0)))
+			{
+				QuizzGameEngine->gMyLogger->error("Failed to render text texture!");
+				bret = false;
+			}
 		}
 	}
 	return bret;
@@ -47,6 +56,8 @@ void CMenuState::Resume()
 void CMenuState::HandleEvents(CQuizzGameEngine* QuizzGameEngine, SDL_Event& e)
 {
 	QuizzGameEngine->BuzzCommand.HandleEvents(QuizzGameEngine, e);
+	QuizzGameEngine->KeyboardCommand.HandleEvents(QuizzGameEngine, e);
+
 	switch (e.type) {
 		case SDL_QUIT:
 			QuizzGameEngine->Quit();

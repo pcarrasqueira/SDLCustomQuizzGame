@@ -29,6 +29,7 @@ public:
 	void AddPlayer(int n_joystick_index, int n_buzz_index);
 	void RemovePlayer(int n_num_player);
 	bool PlayerExists(int n_buzz_index);
+	void ClearPlayers();
 	int GetNumPlayers();
 
 	void ClearAnswers();

@@ -14,6 +14,7 @@ The questions are loaded from an .xml file on `SDL_custom_quizz_game/data/xml/Qu
 	</Question>
 	
 Used game state machine to control game flow.
+
 Used a internal logger to log all activity to a log file.
 
 ## Screenshots

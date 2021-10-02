@@ -11,6 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Game\CBuzzCommand.h" />
+    <ClInclude Include="include\Game\CPlayers.h" />
+    <ClInclude Include="include\Game\CQuestions.h" />
+    <ClInclude Include="include\Game\CQuizzGame.h" />
+    <ClInclude Include="include\Game\CQuizzGameEngine.h" />
+    <ClInclude Include="include\Graphics\CLTexture.h" />
+    <ClInclude Include="include\Graphics\CLWindow.h" />
     <ClInclude Include="include\SDL\begin_code.h" />
     <ClInclude Include="include\SDL\close_code.h" />
     <ClInclude Include="include\SDL\SDL.h" />
@@ -100,33 +107,26 @@
     <ClInclude Include="include\spdlog\logger.h" />
     <ClInclude Include="include\spdlog\spdlog.h" />
     <ClInclude Include="include\spdlog\tweakme.h" />
+    <ClInclude Include="include\States\CGameState.h" />
+    <ClInclude Include="include\States\CMenuState.h" />
+    <ClInclude Include="include\States\CQuestionsState.h" />
+    <ClInclude Include="include\States\CScoresState.h" />
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
-    <ClInclude Include="src\CBuzzCommand.h" />
-    <ClInclude Include="src\CGameState.h" />
-    <ClInclude Include="src\CLTexture.h" />
-    <ClInclude Include="src\CLWindow.h" />
-    <ClInclude Include="src\CMenuState.h" />
-    <ClInclude Include="src\CPlayers.h" />
-    <ClInclude Include="src\CQuestions.h" />
-    <ClInclude Include="src\CQuestionsState.h" />
-    <ClInclude Include="src\CQuizzGame.h" />
-    <ClInclude Include="src\CQuizzGameEngine.h" />
-    <ClInclude Include="src\CScoresState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pugixml\pugixml.cpp" />
-    <ClCompile Include="src\CBuzzCommand.cpp" />
-    <ClCompile Include="src\CLTexture.cpp" />
-    <ClCompile Include="src\CLWindow.cpp" />
-    <ClCompile Include="src\CMenuState.cpp" />
-    <ClCompile Include="src\CPlayers.cpp" />
-    <ClCompile Include="src\CQuestions.cpp" />
-    <ClCompile Include="src\CQuestionsState.cpp" />
-    <ClCompile Include="src\CQuizzGame.cpp" />
-    <ClCompile Include="src\CQuizzGameEngine.cpp" />
-    <ClCompile Include="src\CScoresState.cpp" />
+    <ClCompile Include="src\Game\CBuzzCommand.cpp" />
+    <ClCompile Include="src\Game\CPlayers.cpp" />
+    <ClCompile Include="src\Game\CQuestions.cpp" />
+    <ClCompile Include="src\Game\CQuizzGame.cpp" />
+    <ClCompile Include="src\Game\CQuizzGameEngine.cpp" />
+    <ClCompile Include="src\Graphics\CLTexture.cpp" />
+    <ClCompile Include="src\Graphics\CLWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\States\CMenuState.cpp" />
+    <ClCompile Include="src\States\CQuestionsState.cpp" />
+    <ClCompile Include="src\States\CScoresState.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{49001F4C-797D-4425-9A37-BF49D3C0AFAE}</ProjectGuid>
@@ -164,7 +164,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include\SDL;$(ProjectDir)\pugixml;$(ProjectDir)\include;$(ProjectDir)\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include\SDL;$(ProjectDir)\pugixml;$(ProjectDir)\include;$(ProjectDir)\src;$(ProjectDir)\src\States;$(ProjectDir)\src\Graphics;$(ProjectDir)\src\Game;$(ProjectDir)\include\States;$(ProjectDir)\include\Game;$(ProjectDir)\include\Graphics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

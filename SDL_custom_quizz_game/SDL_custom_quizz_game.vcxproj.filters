@@ -25,6 +25,21 @@
     <Filter Include="Source Files\States">
       <UniqueIdentifier>{fec1e0de-d1c9-46cb-bb6e-5399bb4a0736}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\States">
+      <UniqueIdentifier>{785b9ec8-bcf8-48e0-a40d-e65b3e8d943d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{1e2ed751-e828-411e-98b2-4b624ad2ab5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{e44680ad-a465-47a6-b18a-bbbf37ddb821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{38be297a-4b2b-4075-a71c-e352469e1477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{b8cf7ae4-2580-4b9b-89b4-82cf4341a133}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pugixml\pugiconfig.hpp">
@@ -300,76 +315,76 @@
     <ClInclude Include="include\SDL\SDL_video.h">
       <Filter>Header Files\SDL</Filter>
     </ClInclude>
-    <ClInclude Include="src\CBuzzCommand.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\States\CGameState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="src\CLTexture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\States\CMenuState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="src\CLWindow.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\States\CQuestionsState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="src\CQuestions.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\States\CScoresState.h">
+      <Filter>Header Files\States</Filter>
     </ClInclude>
-    <ClInclude Include="src\CQuizzGame.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Graphics\CLTexture.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\CGameState.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Graphics\CLWindow.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\CQuizzGameEngine.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Game\CBuzzCommand.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\CMenuState.h">
-      <Filter>Source Files\States</Filter>
+    <ClInclude Include="include\Game\CPlayers.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\CQuestionsState.h">
-      <Filter>Source Files\States</Filter>
+    <ClInclude Include="include\Game\CQuestions.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\CPlayers.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Game\CQuizzGame.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\CScoresState.h">
-      <Filter>Source Files\States</Filter>
+    <ClInclude Include="include\Game\CQuizzGameEngine.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CLTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CLWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>pugixml</Filter>
     </ClCompile>
-    <ClCompile Include="src\CBuzzCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CQuestions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CQuizzGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CQuizzGameEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CMenuState.cpp">
+    <ClCompile Include="src\States\CMenuState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="src\CQuestionsState.cpp">
+    <ClCompile Include="src\States\CQuestionsState.cpp">
       <Filter>Source Files\States</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPlayers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CScoresState.cpp">
+    <ClCompile Include="src\States\CScoresState.cpp">
       <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CBuzzCommand.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CPlayers.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CQuestions.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CQuizzGame.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game\CQuizzGameEngine.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\CLTexture.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\CLWindow.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
